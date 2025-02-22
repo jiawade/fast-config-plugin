@@ -110,24 +110,23 @@ public class FastConfigDialog extends DialogWrapper {
                 String platform = null;
                 boolean isRecord = true;
                 boolean resetSession = false;  // 默认不重置会话
+                String environment = null;
 
                 // 逐行处理文件内容
                 for (String line : lines) {
                     if (line.contains("platform")) {
                         // 提取 platform 配置项
-                        platform = line.split("=")[1].trim().replace("'", "").trim();
+                        platform = line.split("=")[1].trim().replace("'", "").replace(";", "").trim();
                         // 根据配置设置平台单选框
                         if ("android".equals(platform)) {
                             androidRadioButton.setSelected(true);
                         } else if ("ios".equals(platform)) {
                             iosRadioButton.setSelected(true);
                         }
-                        System.out.println("platform: " + platform); // 处理 platform = ' android'
                     }
                     if (line.contains("isRecord")) {
                         // 提取 isRecord 配置项
-                        isRecord = Boolean.parseBoolean(line.split("=")[1].trim());
-                        System.out.println("isRecord: " + isRecord);
+                        isRecord = Boolean.parseBoolean(line.split("=")[1].trim().replace("'", "").replace(";", "").trim());
                         // 根据配置设置是否录像单选框
                         if (isRecord) {
                             yesRecordRadioButton.setSelected(true);
@@ -137,13 +136,20 @@ public class FastConfigDialog extends DialogWrapper {
                     }
                     if (line.contains("isReset")) {
                         // 提取 resetSession 配置项
-                        resetSession = Boolean.parseBoolean(line.split("=")[1].trim());
+                        resetSession = Boolean.parseBoolean(line.split("=")[1].trim().replace("'", "").replace(";", "").trim());
                         // 根据配置设置是否重置会话单选框
                         if (resetSession) {
                             yesResetSessionRadioButton.setSelected(true);
                         } else {
                             noResetSessionRadioButton.setSelected(true);
                         }
+                    }
+                    if (line.contains("environment")) {
+                        // 提取 environment 配置项
+                        environment = line.split("=")[1].trim().replace("'", "").trim().replace(";", "").trim();
+                        System.out.println("aaaa: "+environment);
+                        // 根据配置设置下拉框的选择
+                        environmentComboBox.setSelectedItem(environment);
                     }
                 }
             } catch (IOException e) {

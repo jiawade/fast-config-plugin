@@ -53,6 +53,7 @@ public class FastConfig extends AnAction {
             // 替换环境配置
             content = content.replaceAll("export const environment = '.*?'", "export const environment = '" + environment + "'");
 
+            content = content.replaceAll(";+", ";");
             // 将更新后的内容写回 config.ts 文件
             Files.write(Paths.get(configFilePath), content.getBytes());
             System.out.println("config.ts 文件更新成功！");
