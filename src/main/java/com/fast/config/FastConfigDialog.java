@@ -11,6 +11,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 public class FastConfigDialog extends DialogWrapper {
+    private Point location;
+
     private JRadioButton iosRadioButton;
     private JRadioButton androidRadioButton;
     private JRadioButton yesRecordRadioButton;
@@ -24,6 +26,23 @@ public class FastConfigDialog extends DialogWrapper {
         setTitle("修改环境配置"); // 设置对话框标题
         init(); // 初始化
     }
+
+    @Override
+    protected void init() {
+        super.init();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // 获取屏幕宽度和高度
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+
+        // 计算 x 和 y 的位置
+        int x = (int) (screenWidth * 0.60); // 60% 屏幕宽度
+        int y = (int) (screenHeight * 0.10); // 30% 屏幕高度
+
+        // 设置对话框位置
+        setLocation(x, y);
+    }
+
 
     @Override
     protected JComponent createCenterPanel() {
@@ -147,7 +166,6 @@ public class FastConfigDialog extends DialogWrapper {
                     if (line.contains("environment")) {
                         // 提取 environment 配置项
                         environment = line.split("=")[1].trim().replace("'", "").trim().replace(";", "").trim();
-                        System.out.println("aaaa: "+environment);
                         // 根据配置设置下拉框的选择
                         environmentComboBox.setSelectedItem(environment);
                     }
